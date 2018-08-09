@@ -17,7 +17,7 @@ module Graticule #:nodoc:
       def initialize(key=nil, client_id=nil)
         @key = key
         @client_id = client_id
-        @url = URI.parse 'http://maps.googleapis.com/maps/api/geocode/json'
+        @url = URI.parse 'https://maps.googleapis.com/maps/api/geocode/json'
       end
 
       # Locates +address+ returning a Location
@@ -144,6 +144,8 @@ module Graticule #:nodoc:
         if @key && @client_id
           url = super params.merge(:sensor => false, :client => @client_id)
           make_signed_url(url)
+        elsif @key && !@client_id
+          super params.merge(:sensor => false, :key => @key)
         else
           super params.merge(:sensor => false)
         end
